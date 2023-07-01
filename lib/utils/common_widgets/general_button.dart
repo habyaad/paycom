@@ -25,9 +25,9 @@ class GeneralButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onPressed,
-      child: Container(
+      child:  Ink(
         height: height?? 45,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
