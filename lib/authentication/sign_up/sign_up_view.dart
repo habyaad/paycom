@@ -55,7 +55,6 @@ class SignUpView extends StatelessWidget {
                               fontSize: 12,
                             ),
                             controller: viewModel.nameController,
-                            cursorHeight: 10,
                             decoration: InputDecoration(
                               labelText: 'Full Name',
                               labelStyle: const TextStyle(
@@ -104,7 +103,6 @@ class SignUpView extends StatelessWidget {
                             ),
                             controller: viewModel.emailController,
                             keyboardType: TextInputType.emailAddress,
-                            cursorHeight: 10,
                             decoration: InputDecoration(
                               labelText: 'Email Address',
                               labelStyle: const TextStyle(
@@ -220,7 +218,6 @@ class SignUpView extends StatelessWidget {
                             children: [
                               TextFormField(
                                 controller: viewModel.passwordController,
-                                cursorHeight: 10,
                                 obscureText: true,
                                 decoration: InputDecoration(
                                     labelText: 'Password',
@@ -337,7 +334,7 @@ class SignUpView extends StatelessWidget {
                               if (viewModel.formKey.currentState!.validate()) {
                                 viewModel.formKey.currentState!.save();
                                 // Do something with the validated and saved values
-                                viewModel.signUp();
+                                viewModel.signUp(context);
                               }
                             },
                           ),
