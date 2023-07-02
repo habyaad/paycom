@@ -1,3 +1,4 @@
+import 'package:cherry_toast/cherry_toast.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:paycom/model/api_response_model.dart';
@@ -5,14 +6,12 @@ import 'package:paycom/model/user_model.dart';
 import 'package:paycom/services/api_endpoints.dart';
 import 'package:paycom/utils/string_utils.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../services/api_services.dart';
 import '../../services/toast_service.dart';
 import '../../utils/enums.dart';
 
 class SignUpViewModel extends BaseViewModel {
   final ApiServices _apiServices = ApiServices();
-  final ToastService _toastService = ToastService();
 
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
@@ -42,7 +41,7 @@ class SignUpViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void signUp() async {
+  void signUp(BuildContext context) async {
     List firstLastName = StringUtils.splitFullName(nameController.text)!;
 
     UserModel user = UserModel(
@@ -55,11 +54,14 @@ class SignUpViewModel extends BaseViewModel {
         type: "user",
         formattedPhone: phoneController.text);
 
-    ApiResponse response = await _apiServices.post(ApiEndpoints.signUp, user.toJson());
-    if (response.data!.statusCode < 300) {
-      _toastService.success(response.data!.data["success"]["message"]);
-    } else {
-      _toastService.error(response.data!.data["success"]["message"]);
+    ApiResponse response =
+        await _apiServices.post(ApiEndpoints.signUp, user.toJson());
+    if(response.success){
+      ToastService.success(
+        response.data!.data["success"]["message"], context);
+    }else{
+      ToastService.error(
+        response.data!.response["success"]["message"], context);
     }
   }
 }
