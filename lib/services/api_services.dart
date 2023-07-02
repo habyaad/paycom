@@ -13,15 +13,13 @@ class ApiServices {
       // Handle the response
       _logger.message(response.data.toString());
 
-      if (response.statusCode! < 300) {
         return ApiResponse(success: true, data: response);
-      } else {
-        return ApiResponse(success: false, data: response);
-      }
+
     } on DioException catch (error) {
       // Handle the error
-      _logger.error('Error: $error');
-      return ApiResponse(success: false);
+      _logger.error('Error: ${error.response} ');
+      return ApiResponse(success: false, data: error);
+
     }
   }
 }
