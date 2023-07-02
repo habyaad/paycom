@@ -1,9 +1,19 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:paycom/model/api_response_model.dart';
+import 'package:paycom/model/user_model.dart';
+import 'package:paycom/services/api_endpoints.dart';
+import 'package:paycom/utils/string_utils.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../services/api_services.dart';
+import '../../services/toast_service.dart';
 import '../../utils/enums.dart';
 
-class SignUpViewModel extends BaseViewModel{
+class SignUpViewModel extends BaseViewModel {
+  final ApiServices _apiServices = ApiServices();
+  final ToastService _toastService = ToastService();
+
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -14,17 +24,42 @@ class SignUpViewModel extends BaseViewModel{
 
   AccountType get accountType => _accountType;
 
-  void setToUser(){
+  CountryCode _countryCode = CountryCode(code: 'NG', dialCode: '+234');
+
+  CountryCode get countryCode => _countryCode;
+
+  void updateCountry(CountryCode newCountryCode) {
+    _countryCode = newCountryCode;
+  }
+
+  void setToUser() {
     _accountType = AccountType.user;
     notifyListeners();
   }
 
-  void setToMerchant(){
+  void setToMerchant() {
     _accountType = AccountType.merchant;
     notifyListeners();
   }
 
-  void signUp(){
+  void signUp() async {
+    List firstLastName = StringUtils.splitFullName(nameController.text)!;
 
+    UserModel user = UserModel(
+        firstName: firstLastName[0],
+        lastName: firstLastName[1],
+        email: emailController.text,
+        password: passwordController.text,
+        defaultCountry: countryCode.code.toString(),
+        carrierCode: countryCode.dialCode.toString(),
+        type: "user",
+        formattedPhone: phoneController.text);
+
+    ApiResponse response = await _apiServices.post(ApiEndpoints.signUp, user.toJson());
+    if (response.data!.statusCode < 300) {
+      _toastService.success(response.data!.data["success"]["message"]);
+    } else {
+      _toastService.error(response.data!.data["success"]["message"]);
+    }
   }
 }
