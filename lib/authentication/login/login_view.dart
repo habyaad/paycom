@@ -50,7 +50,6 @@ class LoginView extends StatelessWidget {
                           TextFormField(
                             controller: viewModel.emailController,
                             keyboardType: TextInputType.emailAddress,
-                            cursorHeight: 10,
                             decoration: InputDecoration(
                               labelText: 'Email Address',
                               labelStyle: const TextStyle(
@@ -90,7 +89,6 @@ class LoginView extends StatelessWidget {
                           ),
                           TextFormField(
                             controller: viewModel.passwordController,
-                            cursorHeight: 10,
                             obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Password',
@@ -153,7 +151,7 @@ class LoginView extends StatelessWidget {
                               if (viewModel.formKey.currentState!.validate()) {
                                 viewModel.formKey.currentState!.save();
                                 // Do something with the validated and saved values
-                                viewModel.signIn();
+                                viewModel.signIn(context);
                               }
                             },
                           ),
