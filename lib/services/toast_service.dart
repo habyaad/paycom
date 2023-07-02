@@ -1,31 +1,21 @@
+import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ToastService {
-  static void show(String msg, Color color) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 2,
-        backgroundColor: color,
-        textColor: Colors.white,
-        fontSize: 16.0);
+  ToastService._();
+
+  static void success(String msg, context) {
+    CherryToast.success(
+      description: Text(msg),
+      title: const Text("Success"),
+    ).show(context);
   }
 
-  void error(String msg) {
-    ToastService.show(msg, Colors.red);
+  static void error(String msg, context) {
+    CherryToast.success(
+      description: Text(msg),
+      title: const Text("Error"),
+    ).show(context);
   }
 
-  void info(String msg) {
-    ToastService.show(msg, Colors.blue);
-  }
-
-  void success(String msg) {
-    ToastService.show(msg, Colors.green);
-  }
-
-  void warning(String msg) {
-    ToastService.show(msg, Colors.orange);
-  }
 }
